@@ -8,7 +8,7 @@ Created on 2015年1月3日
 '''
 import cPickle as pickle
 import logging,sys
-from constructSession import watchdict
+from constructGraph import watchdict
 negelecttype=set(['user','type','base','comm','free','symb'])
 def findneighbours(edgecounts,topicid,response):
     neighbours={}
