@@ -8,8 +8,18 @@ Created on 2015年1月3日
 '''
 import cPickle as pickle
 import logging,sys
-from constructGraph import watchdict
 negelecttype=set(['user','type','base','comm','free','symb'])
+def watchdict(d,k):
+    '''
+    top k item,
+    mean,median of item frequency
+    '''
+    logger=logging.getLogger(__name__)
+    sd=sorted(d.items(),key=lambda x:x[1],reverse=True)
+    logger.info('top k %s',sd[:k])
+    logger.info('mean %s',np.mean([i[1] for i in sd]))
+    logger.info('median %s',np.median([i[1] for i in sd]))
+
 def findneighbours(edgecounts,topicid,response):
     neighbours={}
     names={}
