@@ -47,7 +47,7 @@ def dealtopic(idir):
     fburls={}
     nbcache={}
     edgecounts={}
-    logging.basicConfig(file=idir+'/gothroughlogging.txt',level=logging.INFO)
+    logging.basicConfig(file=idir+'/constructKBlogging.txt',level=logging.INFO)
     for count,(mid,response) in enumerate(topiccache): 
         if not count%3000:
             logger=logging.getLogger(__name__)
@@ -57,6 +57,7 @@ def dealtopic(idir):
       #      pickle.dump(fburls, open(idir+'/fburls.pkl','wb'))
             pickle.dump(nbcache, open(idir+'/nbcache15.pkl','wb'))
         neighbours,names=findneighbours(edgecounts, mid, response)
+        print neighbours,names
         if neighbours:      
             nbcache[mid]=neighbours
             fbmids.update(names)
