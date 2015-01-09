@@ -8,6 +8,7 @@ Created on 2015年1月3日
 '''
 import cPickle as pickle
 import logging,sys
+from nodelibrary15.constructSession import watchdict
 negelecttype=set(['user','type','base','comm','free','symb'])
 def findneighbours(edgecounts,topicid,response):
     neighbours={}
@@ -25,9 +26,8 @@ def findneighbours(edgecounts,topicid,response):
     #print response
     #if response['property'].has_key('/common/topic/notable_for'
     for iproperty,ineighbors in response['property'].iteritems():
-        if iproperty[1:5] in negelecttype:
-            if iproperty!='/common/topic/notable_for':
-                continue
+        if iproperty[1:5] in negelecttype and iproperty!='/common/topic/notable_for':
+            continue
         if ineighbors.get('valuetype',0)=='compound':
             for iv in ineighbors['values']:
                 for ip,inn in iv['property'].iteritems():
@@ -57,7 +57,7 @@ def dealtopic(idir):
       #      pickle.dump(fburls, open(idir+'/fburls.pkl','wb'))
             pickle.dump(nbcache, open(idir+'/nbcache15.pkl','wb'))
         neighbours,names=findneighbours(edgecounts, mid, response)
-        print edgecounts
+#         print edgecounts
         if neighbours:      
             nbcache[mid]=neighbours
             fbmids.update(names)
@@ -72,8 +72,10 @@ def dealtopic(idir):
     logger=logging.getLogger(__name__)
     logger.info('len of totalmids %s',len(fbmids))
     logger.info('len of totalurls %s',len(fburls))
+    watchdict(edgecounts)
     pickle.dump(fbmids, open(idir+'/fbmids15.pkl','wb'))
     pickle.dump(nbcache, open(idir+'/nbcache15.pkl','wb'))
+    pickle.dump(edgecounts, open(idir+'/edgecounts.pkl','wb'))
 def nearbyentity(coverentity,nbcache):
     '''
     coverentity: set
@@ -84,8 +86,9 @@ def nearbyentity(coverentity,nbcache):
     
 
 def test():
-    dealtopic('/home/zhaoshi/文档/topicdata/topicfb0')
-#     dealtopic(sys.argv[1])
+#     dealtopic('/home/zhaoshi/文档/topicdata/topicfb0')
+#     dealtopic('/Users/ZS/Documents/workspace/AOLlog/zspra')
+    dealtopic(sys.argv[1])
    # dealtopic(sys.argv[1])
    # dirlist=['/home/zhaoshi/文档/topicdata/topicfb0','/home/zhaoshi/文档/topicdata/topicfb1','/home/zhaoshi/文档/topicdata/topicfb2','/home/zhaoshi/文档/topicdata/topicfb3','/home/zhaoshi/文档/topicdata/topicfb4','/home/zhaoshi/文档/topicdata/topicfb5','/home/zhaoshi/文档/topicdata/topicfb6','/home/zhaoshi/文档/topicdata/topicfb7','/home/zhaoshi/文档/topicdata/topicfb8','/home/zhaoshi/文档/topicdata/topicfb9','/home/zhaoshi/文档/topicdata/topicfb10','/home/zhaoshi/文档/topicdata/topicfb11','/home/zhaoshi/文档/topicdata/topicfb12','/home/zhaoshi/文档/topicdata/topicfb13','/home/zhaoshi/文档/topicdata/topicfb14']
     #for idir in dirlist:
