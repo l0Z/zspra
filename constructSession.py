@@ -47,7 +47,7 @@ def dealwithsessions(sessions):
             logger.info('len of querycount %s phrasecount%s clickcount%s',len(querycount),len(phrasecount),len(clickcount))
             logger.info('len of coveredmids %s',len(coveredmids))
         for q in isession.querylist:
-            querycount[q[0]]=querycount.get(q,0)+1
+            querycount[q[0]]=querycount.get(q[0],0)+1
         for iurl in isession.urls:
             clickcount[iurl]=clickcount.get(iurl,0)+1
         for iw in isession.spots:
