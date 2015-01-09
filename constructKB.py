@@ -9,7 +9,6 @@ Created on 2015年1月3日
 import cPickle as pickle
 import logging,sys
 import numpy as np
-from ctypes.test.test_array_in_pointer import Value
 negelecttype=set(['user','type','base','comm','free','symb'])
 def watchdict(d,k):
     '''
