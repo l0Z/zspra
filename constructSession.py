@@ -23,6 +23,7 @@ def watchdict(d,k):
     logger.info('top k %s',sd[:k])
     logger.info('mean %s',np.mean([i[1] for i in sd]))
     logger.info('median %s',np.median([i[1] for i in sd]))
+    pickle.dump(d, open(str(d)+'.pkl','wb'))
 # def watchdict(d):
 #     '''
 #     top k item,
