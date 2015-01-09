@@ -9,6 +9,7 @@ Created on 2015年1月3日
 import cPickle as pickle
 import logging,sys
 import numpy as np
+from ctypes.test.test_array_in_pointer import Value
 negelecttype=set(['user','type','base','comm','free','symb'])
 def watchdict(d,k):
     '''
@@ -96,7 +97,21 @@ def nearbyentity(coverentity,nbcache):
     def u(s1,s2):
         return s1|s2
     return coverentity| reduce(u, [set(nbcache[mid].keys()) for mid in coverentity])
-    
+
+def mergedict(dname):
+    mdir='/home/zhaoshi/文档/topicdata/topicfb'
+    nd={}
+    for i in xrange(15):
+        idir=mdir+str(i)+'/'+dname+'.pkl'
+        idict=pickle.load(open(mdir,'rb'))
+        for item,value in idict.iteritems():
+            nd[item]=nd.get(item,0)+value
+    pickle.dump(nd, open('/home/zhaoshi/文档/topicdata/'+dname+'.pkl','wb'))
+    return nd    
+def test1():
+    for idict in ['fbmids15','nbcache15','edgecounts']:
+        mergedict(idict)      
+          
 
 def test():
 #     dealtopic('/home/zhaoshi/文档/topicdata/topicfb0')
@@ -110,5 +125,5 @@ def test():
      #   ifile=idir+'/topiccache.pkl'
      #   dealtopic(ifile)
 if __name__=='__main__':
-    test()
+    test1()
 #     import json
