@@ -8,6 +8,7 @@ Created on 2015年1月3日
 '''
 import cPickle as pickle
 import logging,sys
+import numpy as np
 negelecttype=set(['user','type','base','comm','free','symb'])
 def watchdict(d,k):
     '''
