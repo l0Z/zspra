@@ -109,7 +109,7 @@ def mergedict(dname):
     watchdict(nd, 100)
     return nd    
 def test1():
-    for idict in ['fbmids15','edgecounts']:
+    for idict in ['edgecounts',]:
         mergedict(idict)      
           
 
