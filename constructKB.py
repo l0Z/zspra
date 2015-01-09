@@ -8,7 +8,7 @@ Created on 2015年1月3日
 '''
 import cPickle as pickle
 import logging,sys
-negelecttype=['user','type','base','comm','free','symb']
+negelecttype=set(['user','type','base','comm','free','symb'])
 def findneighbours(edgecounts,topicid,response):
     neighbours={}
     names={}
@@ -57,7 +57,7 @@ def dealtopic(idir):
       #      pickle.dump(fburls, open(idir+'/fburls.pkl','wb'))
             pickle.dump(nbcache, open(idir+'/nbcache15.pkl','wb'))
         neighbours,names=findneighbours(edgecounts, mid, response)
-        print neighbours,names
+        print edgecounts
         if neighbours:      
             nbcache[mid]=neighbours
             fbmids.update(names)
