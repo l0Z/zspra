@@ -12,7 +12,17 @@ construct graph from sessions
 '''
 import logging
 import cPickle as pickle
-from constructKB import watchdict
+import numpy as np
+def watchdict(d,k):
+    '''
+    top k item,
+    mean,median of item frequency
+    '''
+    logger=logging.getLogger(__name__)
+    sd=sorted(d.items(),key=lambda x:x[1],reverse=True)
+    logger.info('top k %s',sd[:k])
+    logger.info('mean %s',np.mean([i[1] for i in sd]))
+    logger.info('median %s',np.median([i[1] for i in sd]))
 # def watchdict(d):
 #     '''
 #     top k item,
