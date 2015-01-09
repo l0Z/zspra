@@ -102,7 +102,7 @@ def mergedict(dname):
     nd={}
     for i in xrange(15):
         idir=mdir+str(i)+'/'+dname+'.pkl'
-        idict=pickle.load(open(mdir,'rb'))
+        idict=pickle.load(open(idir,'rb'))
         for item,value in idict.iteritems():
             nd[item]=nd.get(item,0)+value
     pickle.dump(nd, open('/home/zhaoshi/文档/topicdata/'+dname+'.pkl','wb'))
