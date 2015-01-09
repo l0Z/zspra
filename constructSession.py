@@ -13,6 +13,7 @@ construct graph from sessions
 import logging
 import cPickle as pickle
 import numpy as np
+
 def watchdict(d,k):
     '''
     top k item,
@@ -23,7 +24,6 @@ def watchdict(d,k):
     logger.info('top k %s',sd[:k])
     logger.info('mean %s',np.mean([i[1] for i in sd]))
     logger.info('median %s',np.median([i[1] for i in sd]))
-    pickle.dump(d, open(str(d)+'.pkl','wb'))
 # def watchdict(d):
 #     '''
 #     top k item,
@@ -62,9 +62,13 @@ def dealwithsessions(sessions):
     #logging
     k=100
     watchdict(querycount, k)
+    pickle.dump(querycount, open( 'querycount.pkl','wb'))
     watchdict(phrasecount, k)
+    pickle.dump(phrasecount, open( 'phrasecount.pkl','wb'))
     watchdict(clickcount, k)
+    pickle.dump(clickcount, open( 'clickcount.pkl','wb'))
     watchdict(coveredmids, k)
+    pickle.dump(coveredmids, open( 'coveredmids.pkl','wb'))
     return querycount,phrasecount,clickcount,coveredmids
             
 def test():
