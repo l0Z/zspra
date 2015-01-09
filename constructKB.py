@@ -101,7 +101,8 @@ def nearbyentity(coverentity,nbcache):
 def test():
 #     dealtopic('/home/zhaoshi/文档/topicdata/topicfb0')
 #     dealtopic('/Users/ZS/Documents/workspace/AOLlog')
-    logging.basicConfig(file=sys.argv[1]+'/constructKBlogging.txt',level=logging.INFO)
+#     sys.argv.append('/Users/ZS/Documents/workspace/AOLlog')
+    logging.basicConfig(filename=sys.argv[1]+'/constructKBlogging.txt',level=logging.INFO)
     dealtopic(sys.argv[1])
    # dealtopic(sys.argv[1])
    # dirlist=['/home/zhaoshi/文档/topicdata/topicfb0','/home/zhaoshi/文档/topicdata/topicfb1','/home/zhaoshi/文档/topicdata/topicfb2','/home/zhaoshi/文档/topicdata/topicfb3','/home/zhaoshi/文档/topicdata/topicfb4','/home/zhaoshi/文档/topicdata/topicfb5','/home/zhaoshi/文档/topicdata/topicfb6','/home/zhaoshi/文档/topicdata/topicfb7','/home/zhaoshi/文档/topicdata/topicfb8','/home/zhaoshi/文档/topicdata/topicfb9','/home/zhaoshi/文档/topicdata/topicfb10','/home/zhaoshi/文档/topicdata/topicfb11','/home/zhaoshi/文档/topicdata/topicfb12','/home/zhaoshi/文档/topicdata/topicfb13','/home/zhaoshi/文档/topicdata/topicfb14']
