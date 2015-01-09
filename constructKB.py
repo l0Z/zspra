@@ -104,8 +104,9 @@ def mergedict(dname):
         idir=mdir+str(i)+'/'+dname+'.pkl'
         idict=pickle.load(open(idir,'rb'))
         for item,value in idict.iteritems():
-            nd[item]=nd.get(item,0)+value
+            nd[item]=nd.get(item,0)+float(value)
     pickle.dump(nd, open('/home/zhaoshi/文档/topicdata/'+dname+'.pkl','wb'))
+    watchdict(nd, 100)
     return nd    
 def test1():
     for idict in ['fbmids15','edgecounts']:
@@ -124,5 +125,7 @@ def test():
      #   ifile=idir+'/topiccache.pkl'
      #   dealtopic(ifile)
 if __name__=='__main__':
+    logging.basicConfig(filename='mergelogging.txt',level=logging.INFO)
+
     test1()
 #     import json
