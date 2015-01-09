@@ -108,7 +108,7 @@ def mergedict(dname):
     pickle.dump(nd, open('/home/zhaoshi/文档/topicdata/'+dname+'.pkl','wb'))
     return nd    
 def test1():
-    for idict in ['fbmids15','nbcache15','edgecounts']:
+    for idict in ['fbmids15','edgecounts']:
         mergedict(idict)      
           
 
