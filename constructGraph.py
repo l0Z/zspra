@@ -9,6 +9,7 @@ TEST
 #phrasecount
 import logging
 import numpy as np
+import time
 def watchdict(d,k):
     '''
     top k item,
@@ -29,7 +30,6 @@ class pragraph():
         self.MAXLEN=10
         self.querynodes
         self.clicknodes
-
     def path2type(self,path):
         '''
         turn Path(nodelist) to pathtype string
@@ -90,10 +90,15 @@ class pragraph():
             pathcache[inode]=paths
             return paths
         paths=getpath(pre, TargetID)
-        return pa
+        return paths
     def bfs(self,SourceID):
+        '''
+        paths starting from 
+        '''
+        logger=logging.getLogger(__name__)
         paths={}
         queue=[]
+        t1=time.clock()
         queue.append(([],SourceID))
         while queue:
             ipath,inode=queue.pop(0)
@@ -105,6 +110,7 @@ class pragraph():
             for inb in self.AdjacencyList[inode].iterkeys():
                 if inb not in ipath:
                     queue.append((ipath.append(inode),inb))
+        logger.info('sourceID %s arrive at %s clicks with %s paths in %s time',SourceID,len(paths),sum( [len(i) for i in paths.itervalues()]),time.clock()-t1 ) 
         return paths
 
     def FindPaths(self,maxnum):

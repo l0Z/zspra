@@ -10,6 +10,7 @@ import cPickle as pickle
 import logging,sys
 import numpy as np
 import time
+from nodelibrary.globalvariables import nbcache
 negelecttype=set(['user','type','base','comm','free','symb'])
 def watchdict(d,k):
     '''
@@ -118,7 +119,28 @@ def mergedict(dname):
 
     pickle.dump(nd, open('/home/zhaoshi/文档/topicdata/'+dname+'.pkl','wb'))
     watchdict(nd, 100)
-    return nd    
+    return nd 
+def kb2graph(f,edged,entityd,nbcache):
+    for ientity,inbs in nbcache.iteritems():
+        eid=entityd.get(ientity,-1)
+        for inb,iedge in inbs.iteritems():
+            nbid=entityd.get(inb,-1)
+            edgeid=edged.get(iedge,-1)
+            f.write(' '.join([eid,nbid,edgeid])+'\n')
+            
+    
+def test_kbgraph():
+    nbcache=pickle.load(open('/home/zhaoshi/文档/topicdata/nbcache15.pkl','rb'))
+    edgecount= pickle.load(open('/home/zhaoshi/文档/topicdata/edgecounts.pkl','rb')) 
+    edged=dict([(edge,i+3) for(i,edge) in enumerate(edgecount.keys()) ] )   
+    entities=pickle.load(open('/home/zhaoshi/文档/topicdata/nearbyentities.pkl','rb')) ##set
+    entityd=dict([ (mid,i) for i,mid in enumerate(entities)]) 
+    f=open('kbgraph.txt','wb')
+    kb2graph(f, edged, entityd, nbcache)
+    f.close()
+
+
+   
 def test1():
     for idict in ['nbcache15','fbmids15','edgecounts',]:
         mergedict(idict)      
@@ -147,7 +169,8 @@ def test():
      #   dealtopic(ifile)
 if __name__=='__main__':
     logging.basicConfig(filename='mergelogging.txt',level=logging.INFO)
-    watch()
+    test_kbgraph()
+#     watch()
 #     findnearby()
 #     testnb()
 
