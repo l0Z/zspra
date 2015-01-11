@@ -122,7 +122,11 @@ def mergedict(dname):
 def test1():
     for idict in ['nbcache15','fbmids15','edgecounts',]:
         mergedict(idict)      
-          
+def watch():
+    #watch edgecount
+    edgecount=pickle.load(open('/home/zhaoshi/文档/topicdata/edgecount.pkl','rb'))   
+    print len(edgecount)
+    watchdict(edgecount, 1000)       
 def findnearby():
     coverentity=pickle.load(open('/home/zhaoshi/文档/nodelibrary/coveredmids.pkl','rb'))
     nbcache=pickle.load(open('/home/zhaoshi/文档/topicdata/nbcache15.pkl','rb'))
@@ -143,7 +147,8 @@ def test():
      #   dealtopic(ifile)
 if __name__=='__main__':
     logging.basicConfig(filename='mergelogging.txt',level=logging.INFO)
-    findnearby()
+    watch()
+#     findnearby()
 #     testnb()
 
 #     test1()
