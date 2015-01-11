@@ -103,14 +103,17 @@ def mergedict(dname):
     for i in xrange(15):
         idir=mdir+str(i)+'/'+dname+'.pkl'
         idict=pickle.load(open(idir,'rb'))
-        nd.update(idict)
-#         for item,value in idict.iteritems():
-#             nd[item]=nd.get(item,0)+float(value)
+        if type(idict.vaules[0])==int:
+            for item,value in idict.iteritems():
+                nd[item]=nd.get(item,0)+float(value)
+        else:
+            nd.update(idict)
+
     pickle.dump(nd, open('/home/zhaoshi/文档/topicdata/'+dname+'.pkl','wb'))
     watchdict(nd, 100)
     return nd    
 def test1():
-    for idict in ['fbmids15','edgecounts',]:
+    for idict in ['nbcache15','fbmids15','edgecounts',]:
         mergedict(idict)      
           
 
