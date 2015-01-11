@@ -98,7 +98,11 @@ def nearbyentity(coverentity,nbcache):
 #         return s1|s2
     nbs=[set(nbcache.get(mid,{}).keys()) for mid in coverentity]
     print 'nbs get'
-    return coverentity| set([i for i in nbs])
+    return coverentity| set([j for i in nbs for j in i])
+def testnb():
+    coverentity=set([1,2])
+    nbcache={1:{2:3,3:4}}
+    print nearbyentity(coverentity, nbcache)
 
 def mergedict(dname):
     mdir='/home/zhaoshi/文档/topicdata/topicfb'
@@ -140,5 +144,7 @@ def test():
 if __name__=='__main__':
     logging.basicConfig(filename='mergelogging.txt',level=logging.INFO)
     findnearby()
+#     testnb()
+
 #     test1()
 #     import json
