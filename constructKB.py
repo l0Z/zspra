@@ -9,6 +9,7 @@ Created on 2015年1月3日
 import cPickle as pickle
 import logging,sys
 import numpy as np
+import time
 negelecttype=set(['user','type','base','comm','free','symb'])
 def watchdict(d,k):
     '''
@@ -93,9 +94,11 @@ def nearbyentity(coverentity,nbcache):
     '''
     coverentity: set
     '''
-    def u(s1,s2):
-        return s1|s2
-    return coverentity| reduce(u, [set(nbcache.get(mid,{}).keys()) for mid in coverentity])
+#     def u(s1,s2):
+#         return s1|s2
+    nbs=[set(nbcache.get(mid,{}).keys()) for mid in coverentity]
+    print 'nbs get'
+    return coverentity| set(i for i in nbs)
 
 def mergedict(dname):
     mdir='/home/zhaoshi/文档/topicdata/topicfb'
