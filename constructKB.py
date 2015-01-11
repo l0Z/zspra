@@ -98,7 +98,7 @@ def nearbyentity(coverentity,nbcache):
 #         return s1|s2
     nbs=[set(nbcache.get(mid,{}).keys()) for mid in coverentity]
     print 'nbs get'
-    return coverentity| set(i for i in nbs)
+    return coverentity| set([i for i in nbs])
 
 def mergedict(dname):
     mdir='/home/zhaoshi/文档/topicdata/topicfb'
