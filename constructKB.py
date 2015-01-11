@@ -116,7 +116,13 @@ def test1():
     for idict in ['nbcache15','fbmids15','edgecounts',]:
         mergedict(idict)      
           
-
+def findnearby():
+    coverentity=pickle.load(open('/home/zhaoshi/文档/nodelibrary/coveredmids.pkl','rb'))
+    nbcache=pickle.load(open('/home/zhaoshi/文档/nodelibrary/nbcache15.pkl','rb'))
+    entities=nearbyentity(coverentity,set(nbcache.keys()))
+    print len(entities)
+    pickle.dump(entities, open('/home/zhaoshi/文档/nodelibrary/nearbyentities.pkl','wb'))
+    
 def test():
 #     dealtopic('/home/zhaoshi/文档/topicdata/topicfb0')
 #     dealtopic('/Users/ZS/Documents/workspace/AOLlog')
@@ -130,6 +136,6 @@ def test():
      #   dealtopic(ifile)
 if __name__=='__main__':
     logging.basicConfig(filename='mergelogging.txt',level=logging.INFO)
-
-    test1()
+    findnearby()
+#     test1()
 #     import json
