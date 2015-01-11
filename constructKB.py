@@ -103,7 +103,7 @@ def mergedict(dname):
     for i in xrange(15):
         idir=mdir+str(i)+'/'+dname+'.pkl'
         idict=pickle.load(open(idir,'rb'))
-        if type(idict.values[0])==int:
+        if type(idict.values()[0])==int:
             for item,value in idict.iteritems():
                 nd[item]=nd.get(item,0)+float(value)
         else:
