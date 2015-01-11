@@ -118,10 +118,10 @@ def test1():
           
 def findnearby():
     coverentity=pickle.load(open('/home/zhaoshi/文档/nodelibrary/coveredmids.pkl','rb'))
-    nbcache=pickle.load(open('/home/zhaoshi/文档/nodelibrary/nbcache15.pkl','rb'))
+    nbcache=pickle.load(open('/home/zhaoshi/文档/topicdata/nbcache15.pkl','rb'))
     entities=nearbyentity(coverentity,set(nbcache.keys()))
     print len(entities)
-    pickle.dump(entities, open('/home/zhaoshi/文档/nodelibrary/nearbyentities.pkl','wb'))
+    pickle.dump(entities, open('/home/zhaoshi/文档/topicdata/nearbyentities.pkl','wb'))
     
 def test():
 #     dealtopic('/home/zhaoshi/文档/topicdata/topicfb0')
