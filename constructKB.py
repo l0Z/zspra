@@ -124,7 +124,7 @@ def test1():
         mergedict(idict)      
 def watch():
     #watch edgecount
-    edgecount=pickle.load(open('/home/zhaoshi/文档/topicdata/edgecount.pkl','rb'))   
+    edgecount=pickle.load(open('/home/zhaoshi/文档/nodelibrary/edgecount.pkl','rb'))   
     print len(edgecount)
     watchdict(edgecount, 1000)       
 def findnearby():
