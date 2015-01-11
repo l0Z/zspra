@@ -125,7 +125,7 @@ def kb2graph(f,edged,entityd,nbcache):
         for inb,iedge in inbs.iteritems():
             nbid=entityd.get(inb,-1)
             edgeid=edged.get(iedge,-1)
-            f.write(' '.join([eid,nbid,edgeid])+'\n')
+            f.write(str(eid)+str(nbid)+str(edgeid)+'\n')
             
     
 def test_kbgraph():
