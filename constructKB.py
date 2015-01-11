@@ -10,7 +10,6 @@ import cPickle as pickle
 import logging,sys
 import numpy as np
 import time
-from nodelibrary.globalvariables import nbcache
 negelecttype=set(['user','type','base','comm','free','symb'])
 def watchdict(d,k):
     '''
