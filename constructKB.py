@@ -120,20 +120,27 @@ def mergedict(dname):
     watchdict(nd, 100)
     return nd 
 def kb2graph(f,edged,entityd,nbcache):
+    logger=logging.getLogger(__name__)
     for ientity,inbs in nbcache.iteritems():
         eid=entityd.get(ientity,-1)
         for inb,iedge in inbs.iteritems():
             nbid=entityd.get(inb,-1)
             edgeid=edged.get(iedge,-1)
-            f.write(str(eid)+' '+str(nbid)+' '+str(edgeid)+'\n')
+            if eid!=-1 and nbid!=-1 and edgeid!=-1:
+                f.write(str(eid)+' '+str(nbid)+' '+str(edgeid)+'\n')
+            else:
+                logger.info('false %s %s %s',eid,nbid,edgeid)
+                
             
     
 def test_kbgraph():
     nbcache=pickle.load(open('/home/zhaoshi/文档/topicdata/nbcache15.pkl','rb'))
     edgecount= pickle.load(open('/home/zhaoshi/文档/topicdata/edgecounts.pkl','rb')) 
-    edged=dict([(edge,i+3) for(i,edge) in enumerate(edgecount.keys()) ] )   
+    edged=dict([(edge,i+5) for(i,edge) in enumerate(edgecount.keys()) ] )   
     entities=pickle.load(open('/home/zhaoshi/文档/topicdata/nearbyentities.pkl','rb')) ##set
     entityd=dict([ (mid,i) for i,mid in enumerate(entities)]) 
+    pickle.dump(edged, open('/home/zhaoshi/文档/topicdata/edged','wb'))
+    pickle.dump(entityd, open('/home/zhaoshi/文档/topicdata/entityd','wb'))
     f=open('kbgraph.txt','wb')
     kb2graph(f, edged, entityd, nbcache)
     f.close()

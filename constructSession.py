@@ -70,6 +70,54 @@ def dealwithsessions(sessions):
     watchdict(coveredmids, k)
     pickle.dump(coveredmids, open( 'coveredmids.pkl','wb'))
     return querycount,phrasecount,clickcount,coveredmids
+def log2graph(f,sessions,queryd,phrased,urld,entityd):
+    for isession in sessions:
+        for iq in isession.querylist:
+            qid=queryd.get(iq[0],-1)
+            urlid=urld.get(iq[2],-1)
+            if qid==-1:
+                continue
+            if  urlid!=-1:
+                #query has click
+                f.write(str(qid)+' 1 '+str(urlid)+'\n')
+            
+            if len(iq)>3:
+                for ispot in set(iq[3]+iq[4]):
+                    spotid=phrased.get(ispot.strip(),-1)
+                    ##query has spot
+                    if spotid!=-1:
+                        f.write(str(qid)+' 2 '+str(spotid)+'\n')
+            else:
+                #the whole query as refiner
+                refiners=set( [iq[0].split()+iq[0]] )
+                for ire in refiners:
+                    pid=phrased.get(ire,-1)
+                    if pid!=-1:
+                        f.write(str(qid)+' 2 '+str(pid)+'\n')
+                
+#         for inb in isession.topicpath:
+        for ispot,itopics in isession.topicpath.iteritems():
+            for itopic,iw in itopics.iteritems():
+                spotid=phrased.get(ispot,-1)
+                topicid=entityd.get(itopic,-1)
+                #spot map to topic
+                f.write(str(spotid)+' 3 '+str(topicid)+' '+str(iw)+'\n')
+def count2dict(mydir):   
+    queryc=pickle.load(open( mydir,'rb'))
+    queryd=[i for i in queryc if queryc[i]>1  ]
+    queryd=dict( [(iquery,i) for i,iquery in enumerate(queryd ) ] )         
+    return queryd       
+            
+def test_sessiongraph():
+    sessions=pickle.load(open('/home/zhaoshi/文档/newsession510.pkl','rb'))
+    entityd=pickle.load(open('/home/zhaoshi/文档/topicdata/entityd','rb'))
+    queryd=count2dict( 'cut_querycount.pkl')
+    phrased=count2dict('cut_phrasecount.pkl')
+    urld=count2dict('clickcount.pkl')
+    f=open('loggraph.txt','wb')
+    log2graph(f,sessions,queryd,phrased,urld,entityd)
+    f.close()
+    
             
 def test():
     sessions=pickle.load(open('/home/zhaoshi/文档/newsession510.pkl','rb'))
