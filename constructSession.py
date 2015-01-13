@@ -126,7 +126,7 @@ def test():
     dealwithsessions(sessions)
 
 if __name__=='__main__':
-    test()            
+    test_sessiongraph()            
     
         
         
