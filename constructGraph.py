@@ -120,6 +120,7 @@ class pragraph():
 #         return paths
 
     def randomwalk(self,SourceID,pathtype):
+        return
         #return TargetID and
         #if pathtype is null, collect 
         
