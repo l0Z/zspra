@@ -10,6 +10,7 @@ TEST
 import logging
 import numpy as np
 import time
+import cPickle as pickle
 def watchdict(d,k):
     '''
     top k item,
@@ -33,7 +34,23 @@ class pragraph():
     def text2graph(self,f):
         '''convert text to graph :  construct adjacencylist'''
         # graph text: each line an edge, ntype+nid+edgeid+ntype+nid+edgeweight
+        for iline in f.readlines():
+            iline=iline.split()
+            n1=iline[0]
+            n2=iline[2]
+            edge=int(iline[1])
+            if len(iline)>3:
+                w=1
+            else:
+                w=float(iline[3])
+            if not self.AdjacencyList.has_key(n1):
+                self.AdjacencyList[n1]={}
+            if not self.AdjacencyList.has_key(n2):
+                self.AdjacencyList[n2]={}
+            self.AdjacencyList[n1][n2]=[(edge,w),]
+            self.AdjacencyList[n2][n1]=[(-edge,w),]
         
+            
         
     def path2type(self,path):
         '''
@@ -200,3 +217,17 @@ class pragraph():
         Paths={}
         #Paths[(sID,tID)]={path:count}
 
+def test_constructgraph():
+    zspra=pragraph()
+    f=open('/home/zhaoshi/文档/nodelibrary/sigir15/zsgraph.txt')
+    zspra.text2graph(f)
+    f.close()
+    pickle.dump(zspra,open('pragraph.pkl','wb'),protocol=2)
+
+if __name__=='__main__':
+    import time
+    t=time.clock()
+    test_constructgraph()
+    print time.clock()-t
+    
+    
