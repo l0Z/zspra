@@ -181,11 +181,12 @@ class pragraph():
                     paths[itarget]=[ipath+iipath for iipath in ipaths]
                 
             if inode[0]=='c':
-                paths[inode]=paths.get(inode,[]).append(ipath)
-
+#                 paths[inode]=paths.get(inode,[]).append(ipath)
+                paths[inode]=paths.get(inode,[])
+                paths[inode].append(ipath)
             for inb in self.AdjacencyList[inode].iterkeys():
                 if inb not in ipath:
-                    queue.append((ipath.append(inode),inb))
+                    queue.append((ipath+[inode,],inb))
         logger.info('sourceID %s arrive at %s clicks with %s paths in %s time',SourceID,len(paths),sum( [len(i) for i in paths.itervalues()]),time.clock()-t1 ) 
         self.bfscache[SourceID]=paths
         return 
