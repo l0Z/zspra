@@ -71,6 +71,13 @@ def dealwithsessions(sessions):
     pickle.dump(coveredmids, open( 'coveredmids.pkl','wb'))
     return querycount,phrasecount,clickcount,coveredmids
 def log2graph(f,sessions,queryd,phrased,urld,entityd):
+    #eid 0~N ,qid N~, urlid~ ,phrased ~
+    #start with e,q,c ,p
+#     entityN=len(entityd)
+#     queryN=len(queryd)
+#     urlN=len(urld)
+#     phraseN=len(phrased)
+#     
     for isession in sessions:
         for iq in isession.querylist:
             qid=queryd.get(iq[0],-1)
@@ -79,21 +86,23 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
                 continue
             if  urlid!=-1:
                 #query has click
-                f.write(str(qid)+' 1 '+str(urlid)+'\n')
+                f.write('q'+str(qid)+' 1 '+'c'+str(urlid)+'\n')
+#                 f.write(str(qid+entityN)+' 1 '+str(urlid+queryN+entityN)+'\n')
             
             if len(iq)>3:
                 for ispot in set(iq[3]+iq[4]):
                     spotid=phrased.get(ispot.strip(),-1)
                     ##query has spot
                     if spotid!=-1:
-                        f.write(str(qid)+' 2 '+str(spotid)+'\n')
+                        f.write('q'+str(qid)+' 2 '+'p'+str(spotid)+'\n')
+#                         f.write(str(qid+entityN)+' 2 '+str(spotid+queryN+entityN+phraseN)+'\n')
             else:
                 #the whole query as refiner
                 refiners=set( iq[0].split()+[iq[0],] )
                 for ire in refiners:
                     pid=phrased.get(ire,-1)
                     if pid!=-1:
-                        f.write(str(qid)+' 2 '+str(pid)+'\n')
+                        f.write('q'+str(qid)+' 2 '+'p'+str(pid)+'\n')
                 
 #         for inb in isession.topicpath:
         for ispot,itopics in isession.topicpath.iteritems():
@@ -101,7 +110,7 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
                 spotid=phrased.get(ispot,-1)
                 topicid=entityd.get(itopic,-1)
                 #spot map to topic
-                f.write(str(spotid)+' 3 '+str(topicid)+' '+str(iw)+'\n')
+                f.write('p'+str(spotid)+' 3 '+'e'+str(topicid)+' '+str(iw)+'\n')
 def count2dict(mydir):   
     queryc=pickle.load(open( mydir,'rb'))
     queryd=[i for i in queryc if queryc[i]>1  ]

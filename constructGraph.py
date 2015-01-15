@@ -30,6 +30,11 @@ class pragraph():
         self.MAXLEN=10
         self.querynodes
         self.clicknodes
+    def text2graph(self,f):
+        '''convert text to graph :  construct adjacencylist'''
+        # graph text: each line an edge, ntype+nid+edgeid+ntype+nid+edgeweight
+        
+        
     def path2type(self,path):
         '''
         turn Path(nodelist) to pathtype string

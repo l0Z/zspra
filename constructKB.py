@@ -127,7 +127,7 @@ def kb2graph(f,edged,entityd,nbcache):
             nbid=entityd.get(inb,-1)
             edgeid=edged.get(iedge,-1)
             if eid!=-1 and nbid!=-1 and edgeid!=-1:
-                f.write(str(eid)+' '+str(nbid)+' '+str(edgeid)+'\n')
+                f.write('e'+str(eid)+' '+str(edgeid)+' '+'e'+str(nbid)+'\n')
             else:
                 logger.info('false %s %s %s',ientity,inb,iedge)
                 
