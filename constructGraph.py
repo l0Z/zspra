@@ -172,6 +172,7 @@ class pragraph():
         queue.append(([],SourceID))
         while queue:
             ipath,inode=queue.pop(0)
+            print paths
             if len(ipath)>self.MAXLEN:
                 return
 #             if isclick(inode):
