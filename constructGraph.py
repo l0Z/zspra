@@ -40,9 +40,9 @@ class pragraph():
             n2=iline[2]
             edge=int(iline[1])
             if len(iline)>3:
-                w=1
-            else:
                 w=float(iline[3])
+            else:
+                w=1
             if not self.AdjacencyList.has_key(n1):
                 self.AdjacencyList[n1]={}
             if not self.AdjacencyList.has_key(n2):
