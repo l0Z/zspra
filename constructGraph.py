@@ -284,7 +284,7 @@ def test_constructgraph():
 
 def test_findpaths():
     logging.basicConfig(filename='bfslogging.txt',level=logging.INFO)
-    zspra=pickle.load(open('pragraph.pkl','rb'),protocol=2)
+    zspra=pickle.load( open('pragraph.pkl','rb'))
     zspra.FindPaths_bfs()
     pickle.dump(zspra,open('bfs_pragraph_115.pkl','wb'),protocol=2)
     
