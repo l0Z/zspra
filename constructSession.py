@@ -89,7 +89,7 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
                         f.write(str(qid)+' 2 '+str(spotid)+'\n')
             else:
                 #the whole query as refiner
-                refiners=set( [iq[0].split()+iq[0]] )
+                refiners=set( [iq[0].split()+[iq[0],]] )
                 for ire in refiners:
                     pid=phrased.get(ire,-1)
                     if pid!=-1:
