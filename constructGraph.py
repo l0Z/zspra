@@ -195,6 +195,7 @@ class pragraph():
         for each source node in query, do bfs and turn paths into pathtypes.
         then calcu pathcounts
         '''
+        self.qnum=82070
         self.bfscache={}
         pathcounts={}
         for i in xrange(self.qnum):
