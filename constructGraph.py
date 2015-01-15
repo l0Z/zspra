@@ -180,7 +180,7 @@ class pragraph():
             #visit node~
 
             for inb in self.AdjacencyList[inode].iterkeys():
-                for iprenodes in pre[inb]:
+#                 for iprenodes in pre[inb]:
 
                 if inb not in curnodes:
                     queue.append(inb)
