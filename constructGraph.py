@@ -29,8 +29,8 @@ class pragraph():
         self.AdjacencyList={} #sid:{tid:(edge,w)}
         self.Paths={}# (sid,tid):{path,count}
         self.MAXLEN=10
-        self.querynodes
-        self.clicknodes
+#         self.querynodes
+#         self.clicknodes
     def text2graph(self,f):
         '''convert text to graph :  construct adjacencylist'''
         # graph text: each line an edge, ntype+nid+edgeid+ntype+nid+edgeweight
