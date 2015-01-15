@@ -27,8 +27,14 @@ def isclick(nodeid):
 class pragraph():
     def __init__(self,):
         self.AdjacencyList={} #sid:{tid:(edge,w)}
-        self.Paths={}# (sid,tid):{path,count}
+        self.paths={}# (sid,tid):{path,count}
+        self.pathtypes={}
+        self.bfscache={}
         self.MAXLEN=10
+        self.qnum=82070
+        self.pnum=84160
+        self.cnum=63019
+        self.enum=896667
 #         self.querynodes
 #         self.clicknodes
     def text2graph(self,f):
@@ -86,38 +92,79 @@ class pragraph():
 #                 paths.extend([ i.append(preedge) for i in prepaths] )
             pathcache[inode]=paths
             return paths
-        paths=getpath(pre, TargetID)
-        return paths
+#         paths=getpath(pre, TargetID)
     def countpath2(self,pre,TargetID):
         '''
         pre[inode]=[nodelist1,nodelist2,...
         '''
-        pathcache={}# pathcache[inode]=[]  {path:count}
-        def getpath(pre,inode):
-            if pathcache.has_key(inode):
-                return pathcache[inode]
-            paths={}
-            if not pre[inode]:
-                #inode is root
-                return {}
-            for (prenodes,prepath) in pre[inode]:
-                if not prepath:
-                    #prenodes
-                    paths[preedge]=paths.get(preedge,0)+1
+#         pathcache={}# pathcache[inode]=[]  {path:count}
+#         def getpath(pre,inode):
+#             if pathcache.has_key(inode):
+#                 return pathcache[inode]
+#             paths={}
+#             if not pre[inode]:
+#                 #inode is root
+#                 return {}
+#             for (prenodes,prepath) in pre[inode]:
+#                 if not prepath:
+#                     #prenodes
+#                     paths[preedge]=paths.get(preedge,0)+1
+# 
+#                 for ipath,icount in prepaths:
+#                     npath=ipath+'|'+preedge
+#                     paths[npath]=paths.get(npath,0)+icount
+# #                 paths.extend([ i.append(preedge) for i in prepaths] )
+#             pathcache[inode]=paths
+#             return paths
+#         paths=getpath(pre, TargetID)
+#         return paths
 
-                for ipath,icount in prepaths:
-                    npath=ipath+'|'+preedge
-                    paths[npath]=paths.get(npath,0)+icount
-#                 paths.extend([ i.append(preedge) for i in prepaths] )
-            pathcache[inode]=paths
-            return paths
-        paths=getpath(pre, TargetID)
-        return paths
+    def randomwalk(self,SourceID,pathtype):
+        #return TargetID and
+        #if pathtype is null, collect 
+        
+#这不能化成DFS子问题，因为只有给定的源点到目标点有路径限制，中间的子问题则无法判断路径限制    
+#     def dfsbeifen(self,Sources, Targets):
+#         paths={}# paths[(s,t)]=[a node series]
+#         for isnode in Sources:
+#             for inb in self.AdjacencyList[isnode].iterkeys():
+#                 if not paths.has_key((isnode,inb))
+#                     paths[(isnode,inb)]=
+#                 paths[(isnode,inb)]=dfs
+#                 if inb not in ipath:
+#                     queue.append((ipath.append(inode),inb))
+    def dfs(self,SourceID, TargetID,MaxLen):
+        #只存中继节点到目的节点的序列，Maxlen最低为1，即在邻居内可以找到目的节点
+        if self.paths.has_key((SourceID, TargetID)):
+            return self.paths[(SourceID, TargetID)]
+        if SourceID==TargetID:
+            return [TargetID,]
+        if MaxLen<1:
+            return []
+
+        for inb in self.AdjacencyList[SourceID].iterkeys():
+            nb2tpaths=self.dfs(inb,TargetID,MaxLen-1)
+            if not nb2tpaths:
+                self.paths[(SourceID, TargetID)]=[[inb,]+ipath for ipath in nb2tpaths ]
+        return self.paths[(SourceID, TargetID)]
+    
+    def FindPaths_dfs(self):
+        for i in xrange(self.qnum):
+            for j in xrange(self.cnum):
+                self.dfs('q'+str(i),'c'+str(j),self.MAXLEN)
+                
+        pickle.dump(self.paths, open('paths.pkl'), protocol=2)
+        
+    
     def bfs(self,SourceID):
         '''
         paths starting from 
+        path是左闭右开区间
+        其实这个设置缓存子问题也是没用的，因为每个子问题中，哪些点能用到的限制也不同
         '''
         logger=logging.getLogger(__name__)
+        if self.bfscache.has_key(SourceID):
+            return 
         paths={}
         queue=[]
         t1=time.clock()
@@ -126,29 +173,39 @@ class pragraph():
             ipath,inode=queue.pop(0)
             if len(ipath)>self.MAXLEN:
                 return
-            if isclick(inode):
+#             if isclick(inode):
+            if inode[0]=='q':
+                self.bfs(inode)
+                for itarget,ipaths in self.bfscache[inode].iteritems():
+                    paths[itarget]=[ipath+iipath for iipath in ipaths]
+                
+            if inode[0]=='c':
                 paths[inode]=paths.get(inode,[]).append(ipath)
 
             for inb in self.AdjacencyList[inode].iterkeys():
                 if inb not in ipath:
                     queue.append((ipath.append(inode),inb))
         logger.info('sourceID %s arrive at %s clicks with %s paths in %s time',SourceID,len(paths),sum( [len(i) for i in paths.itervalues()]),time.clock()-t1 ) 
-        return paths
+        self.bfscache[SourceID]=paths
+        return 
 
-    def FindPaths(self,maxnum):
+    def FindPaths_bfs(self):
         '''
         for each source node in query, do bfs and turn paths into pathtypes.
         then calcu pathcounts
         '''
-        SourceNodes=self.querynodes
+        self.bfscache={}
         pathcounts={}
-        for inode in SourceNodes:
+        for i in xrange(self.qnum):
+            inode='q'+str(i)
             paths=self.bfs(inode)
             for itarget,ipaths in paths.iteritems():
                 for ipath in ipaths:
-                    ipathtype=self.path2type(ipath.append(itarget))
+                    ipath.append(itarget)
+                    ipathtype=self.path2type(ipath)
                     pathcounts[ipathtype]=pathcounts.get(ipathtype,0)+1
-        watchdict(pathcounts,maxnum)
+        watchdict(pathcounts,1000)
+        self.pathtypes=pathcounts
         return pathcounts
         #
     def bfsbeifen(self,SourceID,TargetID):
@@ -224,10 +281,17 @@ def test_constructgraph():
     f.close()
     pickle.dump(zspra,open('pragraph.pkl','wb'),protocol=2)
 
+def test_findpaths():
+    logging.basicConfig(filename='bfslogging.txt',level=logging.INFO)
+    zspra=pickle.load(open('pragraph.pkl','rb'),protocol=2)
+    zspra.FindPaths_bfs()
+    pickle.dump(zspra,open('bfs_pragraph_115.pkl','wb'),protocol=2)
+    
 if __name__=='__main__':
     import time
     t=time.clock()
-    test_constructgraph()
+    test_findpaths()
+#     test_constructgraph()
     print time.clock()-t
     
     
