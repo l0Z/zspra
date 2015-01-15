@@ -110,7 +110,8 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
                 spotid=phrased.get(ispot,-1)
                 topicid=entityd.get(itopic,-1)
                 #spot map to topic
-                f.write('p'+str(spotid)+' 3 '+'e'+str(topicid)+' '+str(iw)+'\n')
+                if spotid!=-1 and topicid!=-1:
+                    f.write('p'+str(spotid)+' 3 '+'e'+str(topicid)+' '+str(iw)+'\n')
 def count2dict(mydir):   
     queryc=pickle.load(open( mydir,'rb'))
     queryd=[i for i in queryc if queryc[i]>1  ]

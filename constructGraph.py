@@ -173,6 +173,7 @@ class pragraph():
         while queue:
             ipath,inode=queue.pop(0)
             print paths
+            print queue
             print ipath
             if len(ipath)>self.MAXLEN:
                 return
