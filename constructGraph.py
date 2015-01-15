@@ -175,8 +175,8 @@ class pragraph():
             if len(ipath)>self.MAXLEN:
                 return
 #             if isclick(inode):
-            if inode[0]=='q':
-                self.bfs(inode)
+            if inode[0]=='q'and self.bfscache.has_key(inode) :
+#                 self.bfs(inode)
                 for itarget,ipaths in self.bfscache[inode].iteritems():
                     paths[itarget]=[ipath+iipath for iipath in ipaths]
                 
@@ -200,8 +200,9 @@ class pragraph():
         pathcounts={}
         for i in xrange(self.qnum):
             inode='q'+str(i)
-            paths=self.bfs(inode)
-            for itarget,ipaths in paths.iteritems():
+            print inode
+            self.bfs(inode)
+            for itarget,ipaths in self.bfscache[inode].iteritems():
                 for ipath in ipaths:
                     ipath.append(itarget)
                     ipathtype=self.path2type(ipath)
