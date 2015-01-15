@@ -284,6 +284,8 @@ def test_constructgraph():
     pickle.dump(zspra,open('pragraph.pkl','wb'),protocol=2)
 
 def test_findpaths():
+    import sys
+    sys.setrecursionlimit(1000000) 
     logging.basicConfig(filename='bfslogging.txt',level=logging.INFO)
     zspra=pickle.load( open('pragraph.pkl','rb'))
     zspra.FindPaths_bfs()
