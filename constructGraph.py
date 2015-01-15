@@ -172,9 +172,7 @@ class pragraph():
         queue.append(([],SourceID))
         while queue:
             ipath,inode=queue.pop(0)
-            print paths
-            print queue
-            print ipath
+            
             if len(ipath)>self.MAXLEN:
                 return
 #             if isclick(inode):
@@ -204,7 +202,7 @@ class pragraph():
         pathcounts={}
         for i in xrange(self.qnum):
             inode='q'+str(i)
-            print inode
+            print inode,len(pathcounts)
             self.bfs(inode)
             for itarget,ipaths in self.bfscache[inode].iteritems():
                 for ipath in ipaths:
