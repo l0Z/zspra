@@ -170,11 +170,18 @@ class pragraph():
         queue=[]
         t1=time.clock()
         queue.append(([],SourceID))
+        ilevel=0
         while queue:
             ipath,inode=queue.pop(0)
-            
-            if len(ipath)>self.MAXLEN:
+            enum=len([ i for i in ipath if i[0]=='e'])
+            if enum>3:
                 return
+            currentlevel=len(ipath)
+            if currentlevel>self.MAXLEN:
+                return
+            if currentlevel>ilevel:
+                ilevel=currentlevel
+                print 'ilevel',ilevel
 #             if isclick(inode):
             if inode[0]=='q'and self.bfscache.has_key(inode) :
 #                 self.bfs(inode)
@@ -185,6 +192,7 @@ class pragraph():
 #                 paths[inode]=paths.get(inode,[]).append(ipath)
                 paths[inode]=paths.get(inode,[])
                 paths[inode].append(ipath)
+                logger.info('inode %s  paths  %s ',inode,paths) 
             for inb in self.AdjacencyList[inode].iterkeys():
                 if inb not in ipath:
                     queue.append((ipath+[inode,],inb))
@@ -197,13 +205,17 @@ class pragraph():
         for each source node in query, do bfs and turn paths into pathtypes.
         then calcu pathcounts
         '''
-        self.qnum=82070
+#         self.qnum=82070
+        trainpairs=pickle.load('pairs.pkl','rb')
+        queries=[i[0] for i in trainpairs]
         self.bfscache={}
         pathcounts={}
-        for i in xrange(self.qnum):
-            inode='q'+str(i)
+#         for i in xrange(self.qnum):
+#             inode='q'+str(i)
+        for inode in queries:
             print inode,len(pathcounts)
             self.bfs(inode)
+            print 'bfs done'
             for itarget,ipaths in self.bfscache[inode].iteritems():
                 for ipath in ipaths:
                     ipath.append(itarget)
@@ -297,7 +309,7 @@ def test_findpaths():
 if __name__=='__main__':
     import time
     t=time.clock()
-    test_constructgraph()
+#     test_constructgraph()
     test_findpaths()
     print time.clock()-t
     

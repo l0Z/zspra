@@ -117,6 +117,16 @@ def count2dict(mydir):
     queryd=[i for i in queryc if queryc[i]>1  ]
     queryd=dict( [(iquery,i) for i,iquery in enumerate(queryd ) ] )         
     return queryd       
+def train_pairs():
+    f=open('loggraph.txt','rb')
+    trainpairs=[]
+    for i in f.readlines():
+        line=i.split()        
+        if line[0][0]=='q' and line[2][0]=='c':
+            trainpairs.append((line[0],line[2]))
+    print len(trainpairs)
+    pickle.dump(trainpairs, open('pairs.pkl','wb'), protocol=2)
+             
             
 def test_sessiongraph():
     sessions=pickle.load(open('/home/zhaoshi/文档/newsession510.pkl','rb'))
@@ -136,7 +146,8 @@ def test():
     dealwithsessions(sessions)
 
 if __name__=='__main__':
-    test_sessiongraph()            
+#     test_sessiongraph()            
+    train_pairs()
     
         
         
