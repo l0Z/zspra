@@ -206,7 +206,7 @@ class pragraph():
         then calcu pathcounts
         '''
 #         self.qnum=82070
-        trainpairs=pickle.load('pairs.pkl','rb')
+        trainpairs=pickle.load(open('pairs.pkl','rb'))
         queries=[i[0] for i in trainpairs]
         self.bfscache={}
         pathcounts={}
