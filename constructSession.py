@@ -81,14 +81,16 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
     for isession in sessions:
         for iq in isession.querylist:
             qid=queryd.get(iq[0],-1)
-            urlid=urld.get(iq[2],-1)
+            urlid=urld.get(iq[2][7:],-1)
             if qid==-1:
                 continue
             if  urlid!=-1:
                 #query has click
                 f.write('q'+str(qid)+' 1 '+'c'+str(urlid)+'\n')
 #                 f.write(str(qid+entityN)+' 1 '+str(urlid+queryN+entityN)+'\n')
-            
+            else:
+                print 'wrong url',iq[2]
+                
             if len(iq)>3:
                 for ispot in set(iq[3]+iq[4]):
                     spotid=phrased.get(ispot.strip(),-1)
@@ -121,7 +123,9 @@ def train_pairs():
     f=open('loggraph.txt','rb')
     trainpairs=[]
     for i in f.readlines():
-        line=i.split()        
+        line=i.split() 
+        if line[1]=='1':
+            print line       
         if line[0][0]=='q' and line[2][0]=='c':
             trainpairs.append((line[0],line[2]))
     print len(trainpairs)
