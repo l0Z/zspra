@@ -181,7 +181,7 @@ class pragraph():
                 return
             if currentlevel>ilevel:
                 ilevel=currentlevel
-                print 'ilevel',ilevel
+                print 'ilevel',ilevel,'nclick',len(paths)
 #             if isclick(inode):
             if inode[0]=='q'and self.bfscache.has_key(inode) :
 #                 self.bfs(inode)
