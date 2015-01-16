@@ -86,6 +86,7 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
                 continue
             if  urlid!=-1:
                 #query has click
+                
                 f.write('q'+str(qid)+' 1 '+'c'+str(urlid)+'\n')
 #                 f.write(str(qid+entityN)+' 1 '+str(urlid+queryN+entityN)+'\n')
             else:
@@ -128,6 +129,8 @@ def train_pairs():
             print line       
         if line[0][0]=='q' and line[2][0]=='c':
             trainpairs.append((line[0],line[2]))
+    print len(trainpairs)
+    trainpairs=set(trainpairs)
     print len(trainpairs)
     pickle.dump(trainpairs, open('pairs.pkl','wb'), protocol=2)
              
