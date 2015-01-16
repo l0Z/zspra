@@ -309,7 +309,7 @@ def test_findpaths():
 if __name__=='__main__':
     import time
     t=time.clock()
-#     test_constructgraph()
+    test_constructgraph()
     test_findpaths()
     print time.clock()-t
     
