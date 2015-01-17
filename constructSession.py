@@ -78,6 +78,7 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
 #     urlN=len(urld)
 #     phraseN=len(phrased)
 #     
+    logger=logging.getLogger(__name__)
     for isession in sessions:
         for iq in isession.querylist:
             qid=queryd.get(iq[0],-1)
@@ -86,6 +87,7 @@ def log2graph(f,sessions,queryd,phrased,urld,entityd):
                 continue
             if  urlid!=-1:
                 #query has click
+                logger.info('q %s click c %s',iq[0],iq[2][7:])
                 
                 f.write('q'+str(qid)+' 1 '+'c'+str(urlid)+'\n')
 #                 f.write(str(qid+entityN)+' 1 '+str(urlid+queryN+entityN)+'\n')
@@ -148,13 +150,15 @@ def test_sessiongraph():
             
 def test():
     sessions=pickle.load(open('/home/zhaoshi/文档/newsession510.pkl','rb'))
-    
-    logging.basicConfig(filename='constructSessionlogging.txt',level=logging.INFO)
+    logging.basicConfig(filename='watchpairslogging.txt',level=logging.INFO)
+#     logging.basicConfig(filename='constructSessionlogging.txt',level=logging.INFO)
+#     logging.basicConfig(filename='constructSessionlogging.txt',level=logging.INFO)
     dealwithsessions(sessions)
 
 if __name__=='__main__':
 #     test_sessiongraph()            
-    train_pairs()
+#     train_pairs()
+    test()
     
         
         
