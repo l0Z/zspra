@@ -144,21 +144,21 @@ def test_sessiongraph():
     phrased=count2dict('cut_phrasecount.pkl')
     urld=count2dict('clickcount.pkl')
     f=open('loggraph.txt','wb')
+    logging.basicConfig(filename='watchpairslogging.txt',level=logging.INFO)
     log2graph(f,sessions,queryd,phrased,urld,entityd)
     f.close()
     
             
 def test():
     sessions=pickle.load(open('/home/zhaoshi/文档/newsession510.pkl','rb'))
-    logging.basicConfig(filename='watchpairslogging.txt',level=logging.INFO)
-#     logging.basicConfig(filename='constructSessionlogging.txt',level=logging.INFO)
+    logging.basicConfig(filename='constructSessionlogging.txt',level=logging.INFO)
 #     logging.basicConfig(filename='constructSessionlogging.txt',level=logging.INFO)
     dealwithsessions(sessions)
 
 if __name__=='__main__':
-#     test_sessiongraph()            
+    test_sessiongraph()            
 #     train_pairs()
-    test()
+#     test()
     
         
         
