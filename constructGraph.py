@@ -84,6 +84,7 @@ class pragraph():
                     if not paths.has_key(inode):
                         paths[inode]=[]
                     paths[inode].append(ipath)
+                    print 'wathcpath',SourceID,inode,ipath
                 else:
                     #先不再拓展e了
                     for inb in self.AdjacencyList[inode].iterkeys():
