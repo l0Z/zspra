@@ -132,6 +132,8 @@ def train_pairs():
         if line[0][0]=='q' and line[2][0]=='c':
             trainpairs.append((line[0],line[2]))
     print len(trainpairs)
+    
+#     pickle.dump(trainpairs, open('pairs.pkl','wb'), protocol=2)
     trainpairs=set(trainpairs)
     print len(trainpairs)
     pickle.dump(trainpairs, open('pairs.pkl','wb'), protocol=2)

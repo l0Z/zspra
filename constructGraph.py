@@ -11,6 +11,7 @@ import logging
 import numpy as np
 import time
 import cPickle as pickle
+from numpy.lib.utils import source
 def watchdict(d,k):
     '''
     top k item,
@@ -56,8 +57,46 @@ class pragraph():
             self.AdjacencyList[n1][n2]=[(edge,w),]
             self.AdjacencyList[n2][n1]=[(-edge,w),]
         
-            
+    def filterout_infoe(self,sourceIDs,maxlen):
+        '''
+        give source q or c, find nearby entities and count them
+        '''
+        ecounts={}
+        paths={}# {e:[path,..]}{e:{q:[path1,path2],c:[path1,path2]}
+        logger=logging.getLogger(__name__)
+        def bfs1(SourceID,maxlen):
+            queue=[]
+            t1=time.clock()
+            queue.append(([],SourceID))
+            ilevel=0
+            while queue:
+                ipath,inode=queue.pop(0)
+                
+                currentlevel=len(ipath)
+                if currentlevel>maxlen:
+                    return
+                if currentlevel>ilevel:
+                    ilevel=currentlevel
+                    print 'ilevel',ilevel,'nclick',len(paths)
+                    
+                if inode[0]=='e':
+                    ecounts[inode]=ecounts.get(inode,0)+1
+                    if not paths.has_key(inode):
+                        paths[inode]=[]
+                    paths[inode].append(ipath)
+                else:
+                    #先不再拓展e了
+                    for inb in self.AdjacencyList[inode].iterkeys():
+                        if inb not in ipath:
+                            queue.append((ipath+[inode,],inb))
+            logger.info('sourceID %s  with %s paths in %s time',SourceID,len(paths),time.clock()-t1 ) 
+            logger.info('ecount %s',len(ecounts)) 
+            return ecounts,paths
         
+        for SourceID in sourceIDs:
+            bfs1(SourceID,maxlen)
+        watchdict(ecounts, 1000)
+        pickle.dump(paths, open('pathcache.pkl','wb'),protocol=2)
     def path2type(self,path):
         '''
         turn Path(nodelist) to pathtype string
@@ -66,6 +105,7 @@ class pragraph():
         edges=[self.AdjacencyList[ path[i] ][ path[i+1] ][0] for i in xrange(len(path))]
         return ' '.join(edges)
 
+    
     def countpath(self,pre):
         '''
         pre[inode]=[(prenode,preedge),……]
@@ -173,6 +213,7 @@ class pragraph():
         ilevel=0
         while queue:
             ipath,inode=queue.pop(0)
+            # no more than 3 entity way
             enum=len([ i for i in ipath if i[0]=='e'])
             if enum>3:
                 return
@@ -305,12 +346,23 @@ def test_findpaths():
     zspra=pickle.load( open('pragraph.pkl','rb'))
     zspra.FindPaths_bfs()
     pickle.dump(zspra,open('bfs_pragraph_115.pkl','wb'),protocol=2)
-    
+def test_finde():
+    zspra=pickle.load( open('pragraph.pkl','rb'))
+    pairs=pickle.load( open('pairs.pkl','rb'))
+    qIDs=set([iq for (iq,ic) in pairs])
+    cIDs=set([ic for (iq,ic) in pairs])
+    ecounts,paths=zspra.filterout_infoe(qIDs,4)
+    pickle.dump(ecounts,open('qecounts122.pkl','wb'),  protocol=2)
+    pickle.dump(paths,open('qpaths122.pkl','wb'),  protocol=2)
+    ecounts,paths=zspra.filterout_infoe(cIDs,4)    
+    pickle.dump(ecounts,open('cecounts122.pkl','wb'),  protocol=2)
+    pickle.dump(paths,open('cpaths122.pkl','wb'),  protocol=2)
 if __name__=='__main__':
     import time
     t=time.clock()
-    test_constructgraph()
-    test_findpaths()
+#     test_constructgraph()
+#     test_findpaths()
+    test_finde()
     print time.clock()-t
     
     
